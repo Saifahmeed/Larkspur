@@ -195,6 +195,11 @@ export function renderNavbar() {
             <span class="cart-count">${cartCount}</span>
           </button>
         ` : ''}
+        
+        <!-- Mobile Hamburger Menu Button -->
+        <button class="btn-icon mobile-menu-btn" id="mobile-menu-btn">
+          <i data-lucide="menu"></i>
+        </button>
       </div>
     </div>
   `;
