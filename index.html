@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Larkspur - Premium E-commerce & Dashboard</title>
+  
+  <!-- Google Fonts: Fraunces (display) + Public Sans (body/UI) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500;1,9..144,600&family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Central CSS stylesheet -->
+  <link rel="stylesheet" href="style.css">
+  
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+  <!-- App Container -->
+  <div id="app">
+    <!-- Announcement Bar -->
+    <div class="announce-bar">
+      <div class="announce-bar-track">
+        <span><i data-lucide="truck"></i> Free shipping on orders over $75</span>
+        <span><i data-lucide="rotate-ccw"></i> Free 30-day returns</span>
+        <span><i data-lucide="shield-check"></i> Secure checkout</span>
+      </div>
+    </div>
+
+    <!-- Header / Navigation Bar -->
+    <header id="navbar-container" class="sticky-nav"></header>
+
+    <!-- Main Dynamic Content -->
+    <main id="main-content" class="fade-in"></main>
+
+    <!-- Footer -->
+    <footer id="footer-container"></footer>
+  </div>
+
+  <!-- Cart Drawer/Sidebar -->
+  <div id="cart-drawer" class="drawer">
+    <div class="drawer-overlay" id="drawer-overlay-btn"></div>
+    <div class="drawer-content">
+      <div class="drawer-header">
+        <h3>Shopping Cart</h3>
+        <button class="btn-icon" id="close-cart-btn">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+      <div id="cart-items-container" class="drawer-body">
+        <!-- Rendered dynamically -->
+      </div>
+      <div id="cart-footer-container" class="drawer-footer">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Dynamic Modal Overlay (Product details, Add/Edit product, checkout success) -->
+  <div id="modal-container" class="modal">
+    <div class="modal-overlay" id="modal-overlay-btn"></div>
+    <div class="modal-content-wrapper">
+      <button class="btn-icon modal-close-btn" id="close-modal-btn">
+        <i data-lucide="x"></i>
+      </button>
+      <div id="modal-body-content">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- App Logic (ES Modules) -->
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
