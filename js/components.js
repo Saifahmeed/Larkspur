@@ -164,6 +164,15 @@ export function renderNavbar() {
           </div>
           <a class="nav-link ${activePage === 'profile' ? 'active' : ''}" href="#profile">My Orders</a>
         `}
+        
+        <!-- Mobile Search Bar (Only shown in drawer) -->
+        ${!isAdmin ? `
+          <div class="search-container mobile-drawer-search">
+            <i data-lucide="search"></i>
+            <input type="text" placeholder="Search products..." class="nav-search-input" value="${store.state.searchQuery || ''}" autocomplete="off">
+            <div class="autocomplete-dropdown search-autocomplete-box" style="display: none;"></div>
+          </div>
+        ` : ''}
       </nav>
 
       <!-- Right actions (Search, Dark/Light, Cart, Admin toggle) -->
@@ -172,8 +181,8 @@ export function renderNavbar() {
           <!-- Search Bar -->
           <div class="search-container nav-search">
             <i data-lucide="search"></i>
-            <input type="text" placeholder="Search products..." id="nav-search-input" value="${store.state.searchQuery || ''}" autocomplete="off">
-            <div class="autocomplete-dropdown" id="search-autocomplete-box" style="display: none;"></div>
+            <input type="text" placeholder="Search products..." class="nav-search-input" value="${store.state.searchQuery || ''}" autocomplete="off">
+            <div class="autocomplete-dropdown search-autocomplete-box" style="display: none;"></div>
           </div>
         ` : ''}
 
@@ -262,70 +271,92 @@ export function renderNavbar() {
   };
 
   // Search input interaction (Autocomplete & Submit)
-  const searchInput = document.getElementById('nav-search-input');
-  const autocompleteBox = document.getElementById('search-autocomplete-box');
-
-  if (searchInput && autocompleteBox) {
-    // Hide dropdown on click outside
-    document.addEventListener('click', (e) => {
-      if (!e.target.closest('.search-container')) {
-        autocompleteBox.style.display = 'none';
-      }
-    });
-
-    searchInput.oninput = () => {
-      const query = searchInput.value.trim().toLowerCase();
-      if (query.length < 1) {
-        autocompleteBox.style.display = 'none';
-        return;
-      }
-
-      const matches = store.state.products.filter(p => 
-        p.name.toLowerCase().includes(query) || 
-        p.category.toLowerCase().includes(query)
-      ).slice(0, 5);
-
-      if (matches.length === 0) {
-        autocompleteBox.innerHTML = `
-          <div style="padding: 10px 16px; font-size: 0.8rem; color: var(--text-tertiary); text-align: center;">
-            No suggestions found
-          </div>
-        `;
-      } else {
-        autocompleteBox.innerHTML = matches.map(p => `
-          <div class="autocomplete-item" data-id="${p.id}">
-            <div class="autocomplete-item-img">
-              <img src="${p.image}" alt="">
-            </div>
-            <div class="autocomplete-item-name">${p.name}</div>
-            <div class="autocomplete-item-price">$${p.price.toFixed(2)}</div>
-          </div>
-        `).join('');
-
-        // Attach click listeners to suggestions
-        autocompleteBox.querySelectorAll('.autocomplete-item').forEach(item => {
-          item.onclick = () => {
-            const pId = item.dataset.id;
-            searchInput.value = '';
-            autocompleteBox.style.display = 'none';
-            store.setPage(`product-${pId}`);
-          };
-        });
-      }
-      autocompleteBox.style.display = 'flex';
-    };
-
-    searchInput.onkeypress = (e) => {
-      if (e.key === 'Enter') {
-        const query = searchInput.value.trim();
-        store.state.searchQuery = query;
-        autocompleteBox.style.display = 'none';
-        if (store.state.activePage !== 'catalog') {
-          store.setPage('catalog');
-        } else {
-          const event = new CustomEvent('catalog-search', { detail: query });
-          window.dispatchEvent(event);
+  const searchContainers = container.querySelectorAll('.search-container');
+  
+  searchContainers.forEach(sc => {
+    const sInput = sc.querySelector('.nav-search-input');
+    const aBox = sc.querySelector('.search-autocomplete-box');
+    
+    if (sInput && aBox) {
+      // Hide dropdown on click outside
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('.search-container')) {
+          aBox.style.display = 'none';
         }
+      });
+
+      sInput.oninput = () => {
+        const query = sInput.value.trim().toLowerCase();
+        if (query.length < 1) {
+          aBox.style.display = 'none';
+          return;
+        }
+
+        const matches = store.state.products.filter(p => 
+          p.name.toLowerCase().includes(query) || 
+          p.category.toLowerCase().includes(query)
+        ).slice(0, 5);
+
+        if (matches.length === 0) {
+          aBox.innerHTML = `
+            <div style="padding: 10px 16px; font-size: 0.8rem; color: var(--text-tertiary); text-align: center;">
+              No suggestions found
+            </div>
+          `;
+        } else {
+          aBox.innerHTML = matches.map(p => `
+            <div class="autocomplete-item" data-id="${p.id}">
+              <div class="autocomplete-item-img">
+                <img src="${p.image}" alt="">
+              </div>
+              <div class="autocomplete-item-name">${p.name}</div>
+              <div class="autocomplete-item-price">$${p.price.toFixed(2)}</div>
+            </div>
+          `).join('');
+
+          // Attach click listeners to suggestions
+          aBox.querySelectorAll('.autocomplete-item').forEach(item => {
+            item.onclick = () => {
+              const pId = item.dataset.id;
+              sInput.value = '';
+              aBox.style.display = 'none';
+              store.setPage(`product-${pId}`);
+            };
+          });
+        }
+        aBox.style.display = 'flex';
+      };
+
+      sInput.onkeypress = (e) => {
+        if (e.key === 'Enter') {
+          const query = sInput.value.trim();
+          store.state.searchQuery = query;
+          aBox.style.display = 'none';
+          if (store.state.activePage !== 'catalog') {
+            store.setPage('catalog');
+          } else {
+            const event = new CustomEvent('catalog-search', { detail: query });
+            window.dispatchEvent(event);
+          }
+        }
+      };
+    }
+  });
+
+  // Mobile Menu Toggle click
+  const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+  if (mobileMenuBtn) {
+    mobileMenuBtn.onclick = () => {
+      const navLinks = container.querySelector('.nav-links');
+      if (navLinks) {
+        navLinks.classList.toggle('mobile-open');
+        const icon = mobileMenuBtn.querySelector('i');
+        if (navLinks.classList.contains('mobile-open')) {
+          icon.setAttribute('data-lucide', 'x');
+        } else {
+          icon.setAttribute('data-lucide', 'menu');
+        }
+        lucide.createIcons();
       }
     };
   }

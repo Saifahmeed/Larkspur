@@ -730,7 +730,7 @@ function renderProductDetail(productId) {
 
         <!-- Reviews Tab (Listing & Submission Form) -->
         <div class="tab-content" id="tab-reviews">
-          <div style="display:grid; grid-template-columns: 1.2fr 1fr; gap:40px; align-items: start;">
+          <div class="product-reviews-layout">
             
             <!-- List -->
             <div style="display:flex; flex-direction:column; gap:20px;">

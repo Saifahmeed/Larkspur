@@ -2462,6 +2462,17 @@ h4 { font-size: 1.05rem; font-family: var(--font-family); font-weight: 700; text
   box-shadow: 0 0 0 4px var(--accent-light);
 }
 
+.product-reviews-layout {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 40px;
+  align-items: start;
+}
+
+.mobile-drawer-search {
+  display: none;
+}
+
 /* Animations */
 @keyframes fadeInUp {
   from { transform: translateY(16px); opacity: 0; }
@@ -2619,8 +2630,19 @@ footer {
     display: flex;
     z-index: 1001; /* Above drawer */
   }
-  .nav-search input {
+  .nav-search {
     display: none; /* Hide expanded text input to save space */
+  }
+  .admin-toggle-label {
+    display: none; /* Hide text to save space for cart and menu */
+  }
+  .mobile-drawer-search {
+    display: flex;
+    width: 100%;
+    margin-bottom: var(--spacing-lg);
+  }
+  .mobile-drawer-search input {
+    width: 100%;
   }
   .nav-logo span {
     display: none;
@@ -2686,6 +2708,10 @@ footer {
 
   /* Fix Profile Layout */
   .profile-layout {
+    grid-template-columns: 1fr;
+  }
+  
+  .product-reviews-layout {
     grid-template-columns: 1fr;
   }
 
