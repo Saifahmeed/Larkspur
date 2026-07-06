@@ -213,7 +213,7 @@ function renderHome() {
 
     heroSec.style.backgroundImage = `linear-gradient(100deg, rgba(20, 22, 18, 0.82) 0%, rgba(20, 22, 18, 0.55) 45%, rgba(20, 22, 18, 0.15) 75%), url('${slide.image}')`;
     heroSec.innerHTML = `
-      <div class="hero-content" style="padding-left: 60px; width: 100%;">
+      <div class="hero-content">
         <span class="hero-subtitle">${slide.subtitle}</span>
         <h1 class="slide-up" style="animation-duration: 0.5s;">${slide.title}</h1>
         <p class="hero-text slide-up" style="animation-duration: 0.7s;">${slide.text}</p>
